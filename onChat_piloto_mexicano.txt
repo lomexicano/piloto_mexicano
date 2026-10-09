@@ -1,0 +1,73 @@
+$${
+ifmatches("%CHATCLEAN%","^.Bem vindo de volta. Por favor digite");
+	// MUDE A SENHA NA LINHA ABAIXO;
+	echo("/login senha"); // <-- MUDE A SENHA AQUI;
+	// ^^^^^^^^^^^^^^^^^^ //;
+endif;
+ifmatches("%CHATCLEAN%","^. Agora voc. est. logado");
+	unset(@&piloto_mexicano[]);
+	//push(@&piloto_mexicano[],"<TASKNAME><@bool_macro><run>");
+	push(@&piloto_mexicano[],"<ACROBATAMEXICANO><@acrobata_mexicano><acrobata_mexicano>");
+	push(@&piloto_mexicano[],"<ASSADORMEXICANOSHOP><@assadordomexicano><assador_mexicano_loja>");
+	push(@&piloto_mexicano[],"<BOTA_E_QUEBRA><@bota_quebra><bota_e_quebra>");
+	push(@&piloto_mexicano[],"<COLHEITA_MEXICANA><@colheita_mexicana><colheita_mexicana>");
+	push(@&piloto_mexicano[],"<COMPRADORMEXICANOSHOP><@comprador_mexicano><comprador_mexicano_shop>");
+	push(@&piloto_mexicano[],"<CONSTRUTORMEXICANOSHOP><@mexican_builder><construtor_mexicano_shop>");
+	push(@&piloto_mexicano[],"<ESPERA_E_FAZ><@espera_e_vende><espera_e_faz>");
+	push(@&piloto_mexicano[],"<FARMCIRCULARMEXICANALOJA><@farm_circular><farm_circular_mexicana_loja>");
+	push(@&piloto_mexicano[],"<GAIOLAMEXICANA><@gaiola_mexicana><gaiola_mexicana_shop>");
+	push(@&piloto_mexicano[],"<MOB_MEXICANO><@mob_mexicano><mob_mexicano>");
+	push(@&piloto_mexicano[],"<QUEBRAMINERIOSMEXICANO><@quebra_minerios_mexicano><quebra_minerios_mexicano_loja>");
+	push(@&piloto_mexicano[],"<QUEBRA_REGION><@quebra_region><quebra_region>");
+	push(@&piloto_mexicano[],"<REPARADORMEXICANOSHOP><@reparador_de_arcos_mexicano><reparador_mexicano_loja>");
+	push(@&piloto_mexicano[],"<REPARADOR_PERMANENTE><@mantem_reparado><reparador_permanente>");
+	push(@&piloto_mexicano[],"<TESTE_LOMEXICANO_ROCKET><@pesca_warpvip><teste_lomexicano_rocket>");
+	push(@&piloto_mexicano[],"<VENDETUDOSHOP><@vende_tudo><vende_tudo_shop>");
+
+	// 25 segundos, pra esperar o piloto automático do cloudscript agir (caso aja);
+	wait(25);
+
+	log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fConferindo se existe algo pra reiniciar...");
+
+	foreach(@&piloto_mexicano[],&macro_atual,#index);
+		match("%&macro_atual%","<([^>]+)><([^>]+)><([^>]+)>",{&task,&bool,&run});
+
+		ifmatches("%%&bool%%","^.+$",macro_segue_ativa);
+		endif;
+
+		is_running = isrunning("%&task%");
+
+		// Log para debugging das conferências, caso necessário;
+		// log("<%&run%> <%&task%:%is_running%> <%&bool%:%macro_segue_ativa%>");
+
+		if((!macro_segue_ativa)||(is_running));
+			// O player desligou a macro, ou ela já foi iniciada;
+			// Portanto, não fazer nada;
+		else;
+			// Um log avisando o usuário, caso ele queira cancelar o processo;
+			log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fTentando reiniciar a macro &a%&run% &8(&7persistindo&8)...");
+			log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fPressione &6DELETE &fpara &ccancelar&f...");
+
+			// Aguardar, no máximo, 60 delays de 1t + 1t do loop = 120t = 6 segundos;
+			do(60);
+				wait(1t);
+			until(KEY_DELETE);
+
+			// Desligar a macro e desligar a flag da macro;
+			// Isso serve tanto para caso o usuário tenha clicado DELETE, quanto para reiniciar a macro em si;
+			stop("%&task%");
+			unset(%&bool%);
+
+			// Se o usuário está segurando DELETE, não reiniciar a macro;
+			// Como a flag já foi desligada, isso fará com que a macro também não reinicie;
+			if(KEY_DELETE);
+				log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &aProcesso cancelado. Macro desligada.");
+			else;
+				// restartar a macro;
+				log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fExecutando macro &6%&run%");
+				run("%&run%");
+			endif;
+		endif;
+	next;
+endif;
+}$$
