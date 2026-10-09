@@ -24,7 +24,7 @@
 <br />
 
 ### Demonstração de Instalação:
-<video src="./tutorial/24_fps.mp4" controls width="100%"></video>
+<video src="./tutorial/24_fps.mp4?raw=true" controls width="100%"></video>
 
 <br />
 
