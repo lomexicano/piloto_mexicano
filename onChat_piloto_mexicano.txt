@@ -24,7 +24,7 @@ ifmatches("%CHATCLEAN%","^. Agora voc. est. logado");
 	push(@&piloto_mexicano[],"<TESTE_LOMEXICANO_ROCKET><@pesca_warpvip><teste_lomexicano_rocket>");
 	push(@&piloto_mexicano[],"<VENDETUDOSHOP><@vende_tudo><vende_tudo_shop>");
 
-	// 25 segundos, pra esperar o piloto automático do cloudscript agir (caso aja);
+	// 25 segundos, pra esperar o piloto automatico do cloudscript agir (caso aja);
 	wait(25);
 
 	log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fConferindo se existe algo pra reiniciar...");
@@ -37,33 +37,33 @@ ifmatches("%CHATCLEAN%","^. Agora voc. est. logado");
 
 		is_running = isrunning("%&task%");
 
-		// Log para debugging das conferências, caso necessário;
+		// Log para debugging das conferencias, caso necessario;
 		// log("<%&run%> <%&task%:%is_running%> <%&bool%:%macro_segue_ativa%>");
 
 		if((!macro_segue_ativa)||(is_running));
-			// O player desligou a macro, ou ela já foi iniciada;
-			// Portanto, não fazer nada;
+			// O player desligou a macro, ou ela ja foi iniciada;
+			// Portanto, nao fazer nada;
 		else;
-			// Um log avisando o usuário, caso ele queira cancelar o processo;
+			// Um log avisando o usuario, caso ele queira cancelar o processo;
 			log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fTentando reiniciar a macro &a%&run% &8(&7persistindo&8)...");
 			log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fPressione &6DELETE &fpara &ccancelar&f...");
 
-			// Aguardar, no máximo, 60 delays de 1t + 1t do loop = 120t = 6 segundos;
+			// Aguardar, no maximo, 60 delays de 1t + 1t do loop = 120t = 6 segundos;
 			do(60);
 				wait(1t);
 			until(KEY_DELETE);
 
 			// Desligar a macro e desligar a flag da macro;
-			// Isso serve tanto para caso o usuário tenha clicado DELETE, quanto para reiniciar a macro em si;
+			// Isso serve tanto para caso o usuario tenha clicado DELETE, quanto para reiniciar a macro em si;
 			stop("%&task%");
 			unset(%&bool%);
 
-			// Se o usuário está segurando DELETE, não reiniciar a macro;
-			// Como a flag já foi desligada, isso fará com que a macro também não reinicie;
+			// Se o usuario esta segurando DELETE, nao reiniciar a macro;
+			// Como a flag ja foi desligada, isso fara com que a macro tambem nao reinicie;
 			if(KEY_DELETE);
-				log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &aProcesso cancelado. Macro desligada.");
+				log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &aProcesso cancelado. &eMacro desligada &8(%&run%)&e!");
 			else;
-				// restartar a macro;
+				// Reiniciar a macro;
 				log("&f&l[&2&lMA&f&lC&4&lRO&f&l] &fExecutando macro &6%&run%");
 				run("%&run%");
 			endif;
